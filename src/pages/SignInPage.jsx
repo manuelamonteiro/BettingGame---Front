@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import AuthForm from "../components/AuthForm";
 import { signIn } from "../services/userApi";
 import { ScreenCointanerSign } from "../assets/ScreenContainers-style";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function SignInPage() {
 	const navigate = useNavigate();
+	const { setConfig } = useContext(AuthContext);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -15,7 +17,9 @@ export default function SignInPage() {
 		event.preventDefault();
 
 		try {
-			await signIn(username, password);
+			const userData = await signIn(username, password);
+			setConfig(userData.id);
+			localStorage.setItem("userId", userData.id);
 			toast('Login successfully!');
 			navigate('/bet');
 		} catch (error) {
