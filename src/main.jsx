@@ -27,7 +27,7 @@ const routes = [
 				element: <SignInPage />
 			},
 			{
-				path: 'bet',
+				path: 'bets',
 				element: <BetPage />
 			},
 		]
