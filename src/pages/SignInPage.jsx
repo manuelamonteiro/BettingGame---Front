@@ -6,6 +6,7 @@ import AuthForm from "../components/AuthForm";
 import { signIn } from "../services/userApi";
 import { ScreenCointanerSign } from "../assets/ScreenContainers-style";
 import { AuthContext } from "../contexts/AuthContext";
+import Logo from "../components/Logo";
 
 export default function SignInPage() {
 	const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function SignInPage() {
 
 	return (
 		<ScreenCointanerSign>
+			<Logo />
 			<AuthForm>
 				<form onSubmit={submit}>
 					<input

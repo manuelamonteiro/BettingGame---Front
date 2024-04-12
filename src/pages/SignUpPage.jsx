@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import AuthForm from "../components/AuthForm";
 import { signUp } from "../services/userApi";
 import { ScreenCointanerSign } from "../assets/ScreenContainers-style";
+import Logo from "../components/Logo";
 
 export default function SignUpPage() {
 	const navigate = useNavigate();
@@ -27,6 +28,7 @@ export default function SignUpPage() {
 
 	return (
 		<ScreenCointanerSign>
+			<Logo />
 			<AuthForm>
 				<form onSubmit={submit}>
 					<input
