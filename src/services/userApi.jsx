@@ -8,6 +8,6 @@ export async function signUp(username, password) {
 
 export async function signIn(username, password) {
 	const res = await api.post('/users/login', { username, password });
-
+	
 	return res.data;
 }

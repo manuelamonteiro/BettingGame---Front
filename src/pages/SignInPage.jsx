@@ -22,7 +22,7 @@ export default function SignInPage() {
 			setConfig(userData.id);
 			localStorage.setItem("userId", userData.id);
 			toast('Login successfully!');
-			navigate('/bet');
+			navigate('/bets');
 		} catch (error) {
 			toast("Unable to login!");
 			setUsername('');
