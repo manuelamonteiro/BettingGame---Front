@@ -9,27 +9,37 @@ import { postBet } from "../services/betApi";
 export default function CardGame({ game }) {
 	const { config: userId } = useContext(AuthContext);
 
-	const [team1, setTeam1] = useState('');
-	const [team2, setTeam2] = useState('');
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [selectedTeam, setSelectedTeam] = useState('');
-	const [betAmount, setBetAmount] = useState('');
+	const [state, setState] = useState({
+		team1: '',
+		team2: '',
+		username: '',
+		password: '',
+		selectedTeam: '',
+		betAmount: ''
+	});
+
 
 	useEffect(() => {
 		if (game && game.name) {
 			const [part1, part2] = game.name.split('x');
-			setTeam1(part1);
-			setTeam2(part2);
+			setState(prevState => ({ ...prevState, team1: part1, team2: part2 }));
 		}
 	}, [game]);
+
+	function handleChange(e) {
+		const { name, value } = e.target;
+		setState(prevState => ({ ...prevState, [name]: value }));
+	}
 
 	async function postUserBet(event) {
 		event.preventDefault();
 
+		const { username, password, betAmount, selectedTeam } = state;
 		const gameId = game.id;
+
 		if (!username || !password || !betAmount || !selectedTeam || !userId || !gameId) {
 			toast('Preencha todos os campos, por favor!');
+			return;
 		}
 
 		try {
@@ -48,25 +58,25 @@ export default function CardGame({ game }) {
 				<p>Selecione uma opção:</p>
 
 				<div className="option">
-					<input type="radio" id={team1} name="selectedTeam" value={team1} onChange={e => setSelectedTeam(e.target.value)} />
-					<label htmlFor={team1}>{team1}</label>
+					<input type="radio" id={state.team1} name="selectedTeam" value={state.team1} onChange={handleChange} />
+					<label htmlFor={state.team1}>{state.team1}</label>
 				</div>
 
 				<div className="option">
-					<input type="radio" id={team2} name="selectedTeam" value={team2} onChange={e => setSelectedTeam(e.target.value)} />
-					<label htmlFor={team2}>{team2}</label>
+					<input type="radio" id={state.team2} name="selectedTeam" value={state.team2} onChange={handleChange} />
+					<label htmlFor={state.team2}>{state.team2}</label>
 				</div>
 
 				<div className="option">
-					<input type="radio" id="draw" name="selectedTeam" value="draw" onChange={e => setSelectedTeam(e.target.value)} />
+					<input type="radio" id="draw" name="selectedTeam" value="draw" onChange={handleChange} />
 					<label htmlFor="draw">Empate</label>
 				</div>
 
 				<input
 					className="input-betAmount"
 					name="betAmount"
-					value={betAmount}
-					onChange={e => setBetAmount(e.target.value)}
+					value={state.betAmount}
+					onChange={handleChange}
 					type="text"
 					required
 					placeholder="valor da aposta"
@@ -77,8 +87,8 @@ export default function CardGame({ game }) {
 				<form onSubmit={postUserBet}>
 					<input
 						name="username"
-						value={username}
-						onChange={e => setUsername(e.target.value)}
+						value={state.username}
+						onChange={handleChange}
 						type="text"
 						required
 						placeholder="username"
@@ -86,8 +96,8 @@ export default function CardGame({ game }) {
 
 					<input
 						name="password"
-						value={password}
-						onChange={e => setPassword(e.target.value)}
+						value={state.password}
+						onChange={handleChange}
 						type="password"
 						required
 						placeholder="password"
