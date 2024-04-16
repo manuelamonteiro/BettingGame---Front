@@ -11,8 +11,6 @@ import BetPage from './pages/BetPage.jsx';
 import SignInPage from './pages/SignInPage.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 
-const baseUrl = import.meta.env.VITE_PATH;
-
 const routes = [
 	{
 		path: "",
@@ -31,8 +29,6 @@ const routes = [
 				element: <BetPage />
 			},
 		]
-	}, {
-		basename: baseUrl
 	}
 ];
 
