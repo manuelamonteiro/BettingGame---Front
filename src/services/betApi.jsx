@@ -7,7 +7,7 @@ export async function postBet(username, password, betAmount, bet, userId, gameId
 }
 
 export async function getBetsByUser(username, password, userId) {
-	const res = await api.get(`/bets/user/${userId}`, { username, password });
+	const res = await api.post(`/bets/user/${userId}`, { username, password });
 
 	return res.data;
 }

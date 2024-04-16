@@ -22,6 +22,7 @@ export const BetPageContainer = styled.div`
 		width:100%;
 		display:flex;
 		justify-content: space-evenly;
+		align-items: center;
 		margin: 2rem;
 
 		button{
@@ -30,9 +31,14 @@ export const BetPageContainer = styled.div`
 			font-weight: 600;
 			font-size: 1rem;
 			border-radius: 6px;
+			height: 40px;
 			line-height: 40px;
 			background-color: #DCDCDC;
 			cursor: pointer;
+		}
+
+		@media(max-width: 600px) {
+			flex-direction: column;
 		}
 	}
 `;

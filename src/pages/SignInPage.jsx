@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -13,6 +13,10 @@ export default function SignInPage() {
 	const { setConfig } = useContext(AuthContext);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+
+	useEffect(() => {
+		localStorage.setItem("userId", "");
+	}, []);
 
 	async function submit(event) {
 		event.preventDefault();
