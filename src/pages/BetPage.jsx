@@ -114,14 +114,14 @@ export default function BetPage() {
 
 			{showUserBets && userBets && (
 				<div>
-					<h2>User Bets:</h2>
+					<h2>Apostas do usuário:</h2>
 					<pre>{JSON.stringify(userBets, null, 2)}</pre>
 				</div>
 			)}
 
 			{showGames && games && (
 				<div>
-					<h2>Results:</h2>
+					<h2>Resultados:</h2>
 					<pre>{JSON.stringify(games, null, 2)}</pre>
 				</div>
 			)}
