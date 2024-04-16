@@ -6,7 +6,7 @@ export const ScreenContainer = styled.div`
 	background-color: #F5F5F5;
 `;
 
-export const SignCointaner = styled(ScreenContainer)`
+export const SignContainer = styled(ScreenContainer)`
 	display: flex;
 	flex-direction: column;
 	align-items: center;

@@ -4,45 +4,60 @@ import { toast } from "react-toastify";
 
 import AuthForm from "../components/AuthForm";
 import { signIn } from "../services/userApi";
-import { SignCointaner } from "../assets/SignPages-style";
+import { SignContainer } from "../assets/SignPages-style";
 import { AuthContext } from "../contexts/AuthContext";
 import Logo from "../components/Logo";
 
 export default function SignInPage() {
 	const navigate = useNavigate();
 	const { setConfig } = useContext(AuthContext);
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+
+	const [formData, setFormData] = useState({
+		username: "",
+		password: ""
+	});
 
 	useEffect(() => {
 		localStorage.setItem("userId", "");
 	}, []);
 
-	async function submit(event) {
+	function handleChange(e) {
+		const { name, value } = e.target;
+		setFormData({
+			...formData,
+			[name]: value
+		});
+	};
+
+	async function handleSubmit(event) {
 		event.preventDefault();
+
+		const { username, password } = formData;
 
 		try {
 			const userData = await signIn(username, password);
 			setConfig(userData.id);
 			localStorage.setItem("userId", userData.id);
-			toast('Login realizado com sucesso!');
-			navigate('/bets');
+			toast("Login realizado com sucesso!");
+			navigate("/bets");
 		} catch (error) {
 			toast("Erro inesperado, tente novamente!");
-			setUsername('');
-			setPassword('');
+			setFormData({
+				username: "",
+				password: ""
+			});
 		}
 	}
 
 	return (
-		<SignCointaner>
+		<SignContainer >
 			<Logo />
 			<AuthForm>
-				<form onSubmit={submit}>
+				<form onSubmit={handleSubmit}>
 					<input
 						name="username"
-						value={username}
-						onChange={e => setUsername(e.target.value)}
+						value={formData.username}
+						onChange={handleChange}
 						type="text"
 						required
 						placeholder="username"
@@ -50,8 +65,8 @@ export default function SignInPage() {
 
 					<input
 						name="password"
-						value={password}
-						onChange={e => setPassword(e.target.value)}
+						value={formData.password}
+						onChange={handleChange}
 						type="password"
 						required
 						placeholder="password"
@@ -62,6 +77,6 @@ export default function SignInPage() {
 
 				<h2 onClick={() => navigate("/register")}>Primeira vez? Cadastre-se!</h2>
 			</AuthForm>
-		</SignCointaner >
+		</SignContainer  >
 	)
 }

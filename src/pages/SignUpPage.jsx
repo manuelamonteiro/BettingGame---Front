@@ -4,16 +4,29 @@ import { toast } from "react-toastify";
 
 import AuthForm from "../components/AuthForm";
 import { signUp } from "../services/userApi";
-import { SignCointaner } from "../assets/SignPages-style";
+import { SignContainer } from "../assets/SignPages-style";
 import Logo from "../components/Logo";
 
 export default function SignUpPage() {
 	const navigate = useNavigate();
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
 
-	async function submit(event) {
+	const [formData, setFormData] = useState({
+		username: '',
+		password: ''
+	});
+
+	function handleChange(e) {
+		const { name, value } = e.target;
+		setFormData({
+			...formData,
+			[name]: value
+		});
+	};
+
+	async function handleSubmit(event) {
 		event.preventDefault();
+
+		const { username, password } = formData;
 
 		try {
 			await signUp(username, password);
@@ -21,20 +34,22 @@ export default function SignUpPage() {
 			navigate('/login');
 		} catch (error) {
 			toast("Erro inesperado, tente novamente!");
-			setUsername('');
-			setPassword('');
+			setFormData({
+				username: '',
+				password: ''
+			});
 		}
 	}
 
 	return (
-		<SignCointaner>
+		<SignContainer >
 			<Logo />
 			<AuthForm>
-				<form onSubmit={submit}>
+				<form onSubmit={handleSubmit}>
 					<input
 						name="username"
-						value={username}
-						onChange={e => setUsername(e.target.value)}
+						value={formData.username}
+						onChange={handleChange}
 						type="text"
 						required
 						placeholder="username"
@@ -42,8 +57,8 @@ export default function SignUpPage() {
 
 					<input
 						name="password"
-						value={password}
-						onChange={e => setPassword(e.target.value)}
+						value={formData.password}
+						onChange={handleChange}
 						type="password"
 						required
 						placeholder="password"
@@ -54,6 +69,6 @@ export default function SignUpPage() {
 
 				<h2 onClick={() => navigate("/login")}>Já tem uma conta? Faça login!</h2>
 			</AuthForm>
-		</SignCointaner >
+		</SignContainer  >
 	)
 }
