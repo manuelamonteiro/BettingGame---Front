@@ -59,6 +59,19 @@ export const CardContainer = styled.div`
 	.card{
 		display:flex;
 		flex-direction: column;
+
+		.input-betAmount{
+			padding-left:1rem;
+			height: 35px;
+			border-radius: 6px;
+
+			::placeholder{
+				font-family: 'Raleway', sans-serif;
+				font-style: normal;
+				font-weight: 400;
+				font-size: 1rem;
+			}
+		}
 	}
 
 	@media(max-width: 600px) {
@@ -67,6 +80,10 @@ export const CardContainer = styled.div`
 
 		.submit-bet{
 			padding-top: 1rem;
+		}
+
+		.card{
+			gap:1rem;
 		}
 	}
 

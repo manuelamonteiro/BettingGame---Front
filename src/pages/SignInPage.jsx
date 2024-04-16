@@ -25,10 +25,10 @@ export default function SignInPage() {
 			const userData = await signIn(username, password);
 			setConfig(userData.id);
 			localStorage.setItem("userId", userData.id);
-			toast('Login successfully!');
+			toast('Login realizado com sucesso!');
 			navigate('/bets');
 		} catch (error) {
-			toast("Unable to login!");
+			toast("Erro inesperado, tente novamente!");
 			setUsername('');
 			setPassword('');
 		}

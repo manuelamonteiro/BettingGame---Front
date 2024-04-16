@@ -17,10 +17,10 @@ export default function SignUpPage() {
 
 		try {
 			await signUp(username, password);
-			toast('Registration completed successfully!');
+			toast('Cadastro realizado com sucesso!');
 			navigate('/login');
 		} catch (error) {
-			toast("Unable to register!");
+			toast("Erro inesperado, tente novamente!");
 			setUsername('');
 			setPassword('');
 		}
@@ -49,10 +49,10 @@ export default function SignUpPage() {
 						placeholder="password"
 					/>
 
-					<button type="submit">Register</button>
+					<button type="submit">Registrar</button>
 				</form>
 
-				<h2 onClick={() => navigate("/login")}>Already have an account? Log in!</h2>
+				<h2 onClick={() => navigate("/login")}>Já tem uma conta? Faça login!</h2>
 			</AuthForm>
 		</SignCointaner >
 	)

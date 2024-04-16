@@ -25,21 +25,25 @@ export default function BetPage() {
 				gamesData.sort((a, b) => a.id - b.id);
 				setGames(gamesData);
 			} catch (error) {
-				toast("Error fetching games!");
+				toast("Erro inesperado ao carregar os jogos, tente novamente!");
 			}
 		};
+
 		fetchData();
 	}, []);
 
 	async function end() {
 		try {
-			await endGames();
-			const updatedGames = await getGames();
-			updatedGames.sort((a, b) => a.id - b.id);
-			setGames(updatedGames);
+			if (!showGames) {
+				await endGames();
+				const updatedGames = await getGames();
+				updatedGames.sort((a, b) => a.id - b.id);
+				setGames(updatedGames);
+			}
+
 			setShowGames(!showGames);
 		} catch (error) {
-			toast("Error!");
+			toast("Erro inesperado, tente novamente!");
 		}
 	}
 
@@ -56,23 +60,27 @@ export default function BetPage() {
 				setPassword('');
 			}
 		} catch (error) {
-			toast("Error!");
+			toast("Erro inesperado, tente novamente!");
 		}
 	}
 
 	return (
 		<BetPageContainer>
-			<h1>Bet Page</h1>
+			<h1>Página de aposta</h1>
 
-			{games.map((game) => (
-				<div key={game.id}>
-					<CardGame game={game} />
-				</div>
-			))}
+			{
+				games.length > 0 ? (
+					games.map((game) => (
+						<div key={game.id}>
+							<CardGame game={game} />
+						</div>
+					))
+				) : "Carregando..."
+			}
 
 			<div className="buttons">
 				<button onClick={() => end()}>
-					End Games
+					Feche as apostas
 				</button>
 
 				<div>
@@ -97,7 +105,7 @@ export default function BetPage() {
 							/>
 
 							<button type="submit">
-								{showUserBets ? "Hide User Bets" : "Show User Bets"}
+								{showUserBets ? "Esconda as apostas" : "Mostre as apostas"}
 							</button>
 						</form>
 					</AuthForm>
