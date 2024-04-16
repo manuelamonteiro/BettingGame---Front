@@ -11,19 +11,23 @@ import AuthForm from "../components/AuthForm";
 export default function BetPage() {
 	const { config: userId } = useContext(AuthContext);
 
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [games, setGames] = useState([]);
-	const [userBets, setUserBets] = useState(null);
-	const [showUserBets, setShowUserBets] = useState(false);
-	const [showGames, setShowGames] = useState(false);
+	const [state, setState] = useState({
+		formData: {
+			username: "",
+			password: ""
+		},
+		games: [],
+		userBets: null,
+		showUserBets: false,
+		showGames: false
+	});
 
 	useEffect(() => {
-		const fetchData = async () => {
+		async function fetchData() {
 			try {
 				const gamesData = await getGames();
 				gamesData.sort((a, b) => a.id - b.id);
-				setGames(gamesData);
+				setState(prevState => ({ ...prevState, games: gamesData }));
 			} catch (error) {
 				toast("Erro inesperado ao carregar os jogos, tente novamente!");
 			}
@@ -32,32 +36,50 @@ export default function BetPage() {
 		fetchData();
 	}, []);
 
-	async function end() {
+	function handleChange(e) {
+		const { name, value } = e.target;
+		setState(prevState => ({
+			...prevState,
+			formData: {
+				...prevState.formData,
+				[name]: value
+			}
+		}));
+	};
+
+	async function handleEndGames() {
 		try {
+			const { showGames } = state;
 			if (!showGames) {
 				await endGames();
 				const updatedGames = await getGames();
 				updatedGames.sort((a, b) => a.id - b.id);
-				setGames(updatedGames);
+				setState(prevState => ({ ...prevState, games: updatedGames }));
 			}
 
-			setShowGames(!showGames);
+			setState(prevState => ({ ...prevState, showGames: !prevState.showGames }));
 		} catch (error) {
 			toast("Erro inesperado, tente novamente!");
 		}
 	}
 
-	async function getUserBets(event) {
+	async function handleGetUserBets(event) {
 		event.preventDefault();
 
 		try {
+			const { username, password } = state.formData;
 			const userBetsData = await getBetsByUser(username, password, userId);
-			setUserBets(userBetsData);
-			setShowUserBets(!showUserBets);
+			setState(prevState => ({ ...prevState, userBets: userBetsData }));
+			setState(prevState => ({ ...prevState, showUserBets: !prevState.showUserBets }));
 
-			if (showUserBets) {
-				setUsername('');
-				setPassword('');
+			if (state.showUserBets) {
+				setState(prevState => ({
+					...prevState,
+					formData: {
+						username: "",
+						password: ""
+					}
+				}));
 			}
 		} catch (error) {
 			toast("Erro inesperado, tente novamente!");
@@ -69,8 +91,8 @@ export default function BetPage() {
 			<h1>Página de aposta</h1>
 
 			{
-				games.length > 0 ? (
-					games.map((game) => (
+				state.games.length > 0 ? (
+					state.games.map((game) => (
 						<div key={game.id}>
 							<CardGame game={game} />
 						</div>
@@ -79,17 +101,17 @@ export default function BetPage() {
 			}
 
 			<div className="buttons">
-				<button onClick={() => end()}>
-					Feche as apostas
+				<button onClick={handleEndGames}>
+					{state.showGames ? "Esconder resultados" : "Fechar as apostas"}
 				</button>
 
 				<div>
 					<AuthForm>
-						<form onSubmit={getUserBets}>
+						<form onSubmit={handleGetUserBets}>
 							<input
 								name="username"
-								value={username}
-								onChange={e => setUsername(e.target.value)}
+								value={state.formData.username}
+								onChange={handleChange}
 								type="text"
 								required
 								placeholder="username"
@@ -97,32 +119,32 @@ export default function BetPage() {
 
 							<input
 								name="password"
-								value={password}
-								onChange={e => setPassword(e.target.value)}
+								value={state.formData.password}
+								onChange={handleChange}
 								type="password"
 								required
 								placeholder="password"
 							/>
 
 							<button type="submit">
-								{showUserBets ? "Esconda as apostas" : "Mostre as apostas"}
+								{state.showUserBets ? "Esconder as apostas" : "Mostrar as apostas"}
 							</button>
 						</form>
 					</AuthForm>
 				</div>
 			</div>
 
-			{showUserBets && userBets && (
+			{state.showUserBets && state.userBets && (
 				<div>
 					<h2>Apostas do usuário:</h2>
-					<pre>{JSON.stringify(userBets, null, 2)}</pre>
+					<pre>{JSON.stringify(state.userBets, null, 2)}</pre>
 				</div>
 			)}
 
-			{showGames && games && (
+			{state.showGames && state.games && (
 				<div>
 					<h2>Resultados:</h2>
-					<pre>{JSON.stringify(games, null, 2)}</pre>
+					<pre>{JSON.stringify(state.games, null, 2)}</pre>
 				</div>
 			)}
 		</BetPageContainer>
