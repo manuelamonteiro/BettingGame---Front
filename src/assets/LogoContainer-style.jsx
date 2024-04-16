@@ -6,17 +6,19 @@ const Flex = styled.div`
 `;
 
 export const LogoContainer = styled(Flex)`
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-    h1{
-        font-family: 'Saira Stencil One', cursive;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 50px;
-        font-size: 48px;
+	h1{
+		font-family: 'Saira Stencil One', cursive;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 50px;
+		font-size: 48px;
 
-        @media(max-width: 600px) {
-            font-size: 44px;
-        }
-    }
+		@media(max-width: 600px) {
+		font-size: 44px;
+		}
+	}
 `;

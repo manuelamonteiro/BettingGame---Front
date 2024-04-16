@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import AuthForm from "../components/AuthForm";
 import { signIn } from "../services/userApi";
-import { ScreenCointanerSign } from "../assets/ScreenContainers-style";
+import { SignCointaner } from "../assets/SignPages-style";
 import { AuthContext } from "../contexts/AuthContext";
 import Logo from "../components/Logo";
 
@@ -31,7 +31,7 @@ export default function SignInPage() {
 	}
 
 	return (
-		<ScreenCointanerSign>
+		<SignCointaner>
 			<Logo />
 			<AuthForm>
 				<form onSubmit={submit}>
@@ -58,6 +58,6 @@ export default function SignInPage() {
 
 				<h2 onClick={() => navigate("/register")}>Primeira vez? Cadastre-se!</h2>
 			</AuthForm>
-		</ScreenCointanerSign >
+		</SignCointaner >
 	)
 }

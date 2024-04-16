@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 
+import { CardContainer } from "../assets/BetPage-style";
+import AuthForm from "./AuthForm";
+
 export default function CardGame({ game }) {
 	const [team1, setTeam1] = useState('');
 	const [team2, setTeam2] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 
 	useEffect(() => {
 		if (game && game.name) {
@@ -13,25 +18,51 @@ export default function CardGame({ game }) {
 	}, [game]);
 
 	return (
-		<div>
-			<h2>{game.name}</h2>
+		<CardContainer>
 			<div className="card">
-				<h2>Selecione apenas uma opção:</h2>
+				<h2>{game.name}</h2>
+
+				<p>Selecione apenas uma opção:</p>
+
 				<div className="option">
-					<input type="checkbox" id="option1" name="option1" />
+					<input type="checkbox" id={team1} name={team1} />
 					<label htmlFor="option1">{team1}</label>
 				</div>
+
 				<div className="option">
-					<input type="checkbox" id="option2" name="option2" />
+					<input type="checkbox" id={team2} name={team2} />
 					<label htmlFor="option2">{team2}</label>
 				</div>
+
 				<div className="option">
-					<input type="checkbox" id="option3" name="option3" />
-					<label htmlFor="option3">Draw</label>
+					<input type="checkbox" id="draw" name="draw" />
+					<label htmlFor="option3">Empate</label>
 				</div>
-				<button id="submitButton">Enviar</button>
-				<h3>Result: {game.result}</h3>
 			</div>
-		</div>
+
+			<AuthForm>
+				<form onSubmit={() => { }}>
+					<input
+						name="username"
+						value={username}
+						onChange={e => setUsername(e.target.value)}
+						type="text"
+						required
+						placeholder="username"
+					/>
+
+					<input
+						name="password"
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+						type="password"
+						required
+						placeholder="password"
+					/>
+
+					<button type="submit">Enviar</button>
+				</form>
+			</AuthForm>
+		</CardContainer>
 	);
 }

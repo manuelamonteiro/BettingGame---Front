@@ -6,8 +6,7 @@ dotenv.config();
 
 const base = process.env.BASE_URL || "";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  base
+	plugins: [react()],
+	base
 })

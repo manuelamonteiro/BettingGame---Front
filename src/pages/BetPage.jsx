@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../contexts/AuthContext";
 import { getGames, endGames } from "../services/gameApi";
 import CardGame from "../components/CardGame";
+import { BetPageContainer } from "../assets/BetPage-style";
 
 export default function BetPage() {
 	const { config: userId } = useContext(AuthContext);
@@ -34,7 +35,7 @@ export default function BetPage() {
 
 	async function getUserBets() {
 		try {
-			const userBetsData = await getBetsByUser('manuzinha', '123456789', userId);
+			const userBetsData = await getBetsByUser('manuzinhah', '123456789', userId);
 			setUserBets(userBetsData);
 			console.log(userBetsData);
 		} catch (error) {
@@ -43,15 +44,19 @@ export default function BetPage() {
 	}
 
 	return (
-		<>
-			<h1>Página de Apostas!</h1>
-			<button onClick={() => end()}>End games</button>
-			<button onClick={() => getUserBets()}>User Bets</button>
+		<BetPageContainer>
+			<h1>Bet Page</h1>
+
 			{games.map((game) => (
-				<div key={game.id} style={{ border: "1px solid #ccc", padding: "10px" }}>
+				<div key={game.id}>
 					<CardGame game={game} />
 				</div>
 			))}
-		</>
+
+			<div className="buttons">
+				<button onClick={() => end()}>End games</button>
+				<button onClick={() => getUserBets()}>User Bets</button>
+			</div>
+		</BetPageContainer>
 	)
 }
